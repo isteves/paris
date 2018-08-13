@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>My presentation</title>
+    <meta charset="utf-8">
+    <meta name="author" content="Irene Steves" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/rladies.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/uo-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# My presentation
+## RLadies Paris
+### Irene Steves
+### August 2018
+
+---
+
+
+# About me
+
+- Background in B.A./M.Sc. organismal biology/ecology
+- Most recently in Santa Barbara
+- Next up: Tel Aviv
+
+![](animals.png)
+
+---
+
+background-image: url(santabarbara.jpg)
+background-position: center
+background-size: cover
+
+---
+
+background-image: url(https://media.giphy.com/media/wPn31WOCzkvKg/giphy.gif)
+background-position: center
+background-size: contain
+
+---
+
+# Advent of Code
+
+a series of [programming puzzles](https://adventofcode.com/2017/about) in December every year (2015-present)
+
+- language agnostic
+- 2-part puzzles that build on a theme 
+- leaderboard/stats
+
+fun topics (recursion, hashing, etc.) but don't showcase R/tidyverse
+
+---
+
+# Tidies of March
+
+A series of bite-sized puzzles that focus on _core data science skills_ as championed by the tidyverse set of packages
+
+**User goals:**
+
+- Practice tidyverse skills
+- Improve workflow/project management 
+- Engage with the community
+- Learn by reading other people's code
+
+---
+
+# Tidyverse functions
+
+What more is there than the core verbs?
+
+- `mutate()`
+- `select()`
+- `filter()`
+- `summarize()`
+- `arrange()`
+- `group_by()`
+
+---
+
+class: inverse, center, middle
+
+# Under-loved tidyverse functions
+
+---
+
+## Data
+
+
+```r
+library(tidyverse)
+
+starwars
+```
+
+```
+## # A tibble: 87 x 13
+##    name  height  mass hair_color skin_color eye_color birth_year gender
+##    &lt;chr&gt;  &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; 
+##  1 Luke~    172    77 blond      fair       blue            19   male  
+##  2 C-3PO    167    75 &lt;NA&gt;       gold       yellow         112   &lt;NA&gt;  
+##  3 R2-D2     96    32 &lt;NA&gt;       white, bl~ red             33   &lt;NA&gt;  
+##  4 Dart~    202   136 none       white      yellow          41.9 male  
+##  5 Leia~    150    49 brown      light      brown           19   female
+##  6 Owen~    178   120 brown, gr~ light      blue            52   male  
+##  7 Beru~    165    75 brown      light      blue            47   female
+##  8 R5-D4     97    32 &lt;NA&gt;       white, red red             NA   &lt;NA&gt;  
+##  9 Bigg~    183    84 black      light      brown           24   male  
+## 10 Obi-~    182    77 auburn, w~ fair       blue-gray       57   male  
+## # ... with 77 more rows, and 5 more variables: homeworld &lt;chr&gt;,
+## #   species &lt;chr&gt;, films &lt;list&gt;, vehicles &lt;list&gt;, starships &lt;list&gt;
+```
+
+---
+
+background-image: url(grunions.jpg)
+background-position: center
+background-size: cover
+class: inverse, center, middle
+
+# `count`ing things
+
+---
+
+
+```r
+starwars %&gt;%
+    group_by(hair_color, skin_color, eye_color) %&gt;%
+    summarize(count = n())
+```
+
+```
+## # A tibble: 67 x 4
+## # Groups:   hair_color, skin_color [?]
+##    hair_color    skin_color eye_color count
+##    &lt;chr&gt;         &lt;chr&gt;      &lt;chr&gt;     &lt;int&gt;
+##  1 auburn        fair       blue          1
+##  2 auburn, grey  fair       blue          1
+##  3 auburn, white fair       blue-gray     1
+##  4 black         blue, grey yellow        1
+##  5 black         brown      brown         1
+##  6 black         dark       brown         3
+##  7 black         dark       dark          1
+##  8 black         fair       brown         2
+##  9 black         light      brown         1
+## 10 black         tan        brown         2
+## # ... with 57 more rows
+```
+
+---
+
+
+```r
+starwars %&gt;% 
+    count(hair_color, skin_color, eye_color)
+```
+
+```
+## # A tibble: 67 x 4
+##    hair_color    skin_color eye_color     n
+##    &lt;chr&gt;         &lt;chr&gt;      &lt;chr&gt;     &lt;int&gt;
+##  1 auburn        fair       blue          1
+##  2 auburn, grey  fair       blue          1
+##  3 auburn, white fair       blue-gray     1
+##  4 black         blue, grey yellow        1
+##  5 black         brown      brown         1
+##  6 black         dark       brown         3
+##  7 black         dark       dark          1
+##  8 black         fair       brown         2
+##  9 black         light      brown         1
+## 10 black         tan        brown         2
+## # ... with 57 more rows
+```
+
+---
+
+background-image: url(nest.jpg)
+background-position: center
+background-size: cover
+class: inverse, center, middle
+
+# Embrace the list-column
+
+---
+
+## List-columns in familiar form
+
+
+```
+## # A tibble: 20 x 2
+##    name           starships_combined                                      
+##    &lt;chr&gt;          &lt;chr&gt;                                                   
+##  1 Anakin Skywal~ Trade Federation cruiser; Jedi Interceptor; Naboo fight~
+##  2 Arvel Crynyd   A-wing                                                  
+##  3 Biggs Darklig~ X-wing                                                  
+##  4 Boba Fett      Slave 1                                                 
+##  5 Chewbacca      Millennium Falcon; Imperial shuttle                     
+##  6 Darth Maul     Scimitar                                                
+##  7 Darth Vader    TIE Advanced x1                                         
+##  8 Gregar Typho   Naboo fighter                                           
+##  9 Grievous       Belbullab-22 starfighter                                
+## 10 Han Solo       Millennium Falcon; Imperial shuttle                     
+## 11 Jek Tono Pork~ X-wing                                                  
+## 12 Lando Calriss~ Millennium Falcon                                       
+## 13 Luke Skywalker X-wing; Imperial shuttle                                
+## 14 Nien Nunb      Millennium Falcon                                       
+## 15 Obi-Wan Kenobi Jedi starfighter; Trade Federation cruiser; Naboo star ~
+## 16 Padmé Amidala  H-type Nubian yacht; Naboo star skiff; Naboo fighter    
+## 17 Plo Koon       Jedi starfighter                                        
+## 18 Poe Dameron    T-70 X-wing fighter                                     
+## 19 Ric Olié       Naboo Royal Starship                                    
+## 20 Wedge Antilles X-wing
+```
+
+---
+
+## `separate` out the `rows`
+
+
+```r
+sw %&gt;% 
+    separate_rows(starships_combined, sep = "; ")
+```
+
+```
+## # A tibble: 31 x 2
+##    name              starships_combined      
+##    &lt;chr&gt;             &lt;chr&gt;                   
+##  1 Anakin Skywalker  Trade Federation cruiser
+##  2 Anakin Skywalker  Jedi Interceptor        
+##  3 Anakin Skywalker  Naboo fighter           
+##  4 Arvel Crynyd      A-wing                  
+##  5 Biggs Darklighter X-wing                  
+##  6 Boba Fett         Slave 1                 
+##  7 Chewbacca         Millennium Falcon       
+##  8 Chewbacca         Imperial shuttle        
+##  9 Darth Maul        Scimitar                
+## 10 Darth Vader       TIE Advanced x1         
+## # ... with 21 more rows
+```
+
+---
+
+## `nest()/unnest()`
+
+
+```r
+sw2 &lt;- starwars %&gt;% select(name, starships)
+sw2
+```
+
+```
+## # A tibble: 87 x 2
+##    name               starships
+##    &lt;chr&gt;              &lt;list&gt;   
+##  1 Luke Skywalker     &lt;chr [2]&gt;
+##  2 C-3PO              &lt;chr [0]&gt;
+##  3 R2-D2              &lt;chr [0]&gt;
+##  4 Darth Vader        &lt;chr [1]&gt;
+##  5 Leia Organa        &lt;chr [0]&gt;
+##  6 Owen Lars          &lt;chr [0]&gt;
+##  7 Beru Whitesun lars &lt;chr [0]&gt;
+##  8 R5-D4              &lt;chr [0]&gt;
+##  9 Biggs Darklighter  &lt;chr [1]&gt;
+## 10 Obi-Wan Kenobi     &lt;chr [5]&gt;
+## # ... with 77 more rows
+```
+
+---
+
+
+```r
+sw2 %&gt;% 
+    unnest(starships)
+```
+
+```
+## # A tibble: 31 x 2
+##    name              starships               
+##    &lt;chr&gt;             &lt;chr&gt;                   
+##  1 Luke Skywalker    X-wing                  
+##  2 Luke Skywalker    Imperial shuttle        
+##  3 Darth Vader       TIE Advanced x1         
+##  4 Biggs Darklighter X-wing                  
+##  5 Obi-Wan Kenobi    Jedi starfighter        
+##  6 Obi-Wan Kenobi    Trade Federation cruiser
+##  7 Obi-Wan Kenobi    Naboo star skiff        
+##  8 Obi-Wan Kenobi    Jedi Interceptor        
+##  9 Obi-Wan Kenobi    Belbullab-22 starfighter
+## 10 Anakin Skywalker  Trade Federation cruiser
+## # ... with 21 more rows
+```
+
+---
+
+
+```r
+sw2 %&gt;% 
+    unnest(starships) %&gt;% 
+    nest(name)
+```
+
+```
+## # A tibble: 16 x 2
+##    starships                data            
+##    &lt;chr&gt;                    &lt;list&gt;          
+##  1 X-wing                   &lt;tibble [4 x 1]&gt;
+##  2 Imperial shuttle         &lt;tibble [3 x 1]&gt;
+##  3 TIE Advanced x1          &lt;tibble [1 x 1]&gt;
+##  4 Jedi starfighter         &lt;tibble [2 x 1]&gt;
+##  5 Trade Federation cruiser &lt;tibble [2 x 1]&gt;
+##  6 Naboo star skiff         &lt;tibble [2 x 1]&gt;
+##  7 Jedi Interceptor         &lt;tibble [2 x 1]&gt;
+##  8 Belbullab-22 starfighter &lt;tibble [2 x 1]&gt;
+##  9 Naboo fighter            &lt;tibble [3 x 1]&gt;
+## 10 Millennium Falcon        &lt;tibble [4 x 1]&gt;
+## 11 Slave 1                  &lt;tibble [1 x 1]&gt;
+## 12 A-wing                   &lt;tibble [1 x 1]&gt;
+## 13 Naboo Royal Starship     &lt;tibble [1 x 1]&gt;
+## 14 Scimitar                 &lt;tibble [1 x 1]&gt;
+## 15 T-70 X-wing fighter      &lt;tibble [1 x 1]&gt;
+## 16 H-type Nubian yacht      &lt;tibble [1 x 1]&gt;
+```
+
+---
+
+## Typical use-cases
+
+- models - split your data by some group and apply the model onto your tibble list-column
+- strings - `str_extract_all` &amp; friends often return results of varying length
+
+---
+
+background-image: url(shakshuka.jpg)
+background-position: center
+background-size: cover
+class: inverse, center, middle
+
+# Data ingest
+
+---
+
+## Handle data ingest issues upfront
+
+
+```r
+read_csv("data.csv", 
+         skip = 2,
+         na = c("NA", "-9999"),
+         trim_ws = TRUE)
+```
+
+---
+
+
+```r
+pies &lt;- tribble(
+    ~name, ~eggs, ~flour,
+    "lemon", NA, NA, 
+    " pumpkin", 2, 1,
+    "chocolate ", 1, "none"
+)
+
+pies
+```
+
+```
+## # A tibble: 3 x 3
+##   name          eggs flour
+##   &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;
+## 1 lemon           NA &lt;NA&gt; 
+## 2 " pumpkin"       2 1    
+## 3 "chocolate "     1 none
+```
+
+---
+
+
+```r
+pies %&gt;% 
+    mutate(name = str_trim(name),
+           flour = na_if(flour, "none"))
+```
+
+```
+## # A tibble: 3 x 3
+##   name       eggs flour
+##   &lt;chr&gt;     &lt;dbl&gt; &lt;chr&gt;
+## 1 lemon        NA &lt;NA&gt; 
+## 2 pumpkin       2 1    
+## 3 chocolate     1 &lt;NA&gt;
+```
+
+---
+
+# `count()`
+
+
+```r
+starwars %&gt;% 
+    count(hair_color, skin_color, eye_color)
+```
+
+```
+## # A tibble: 67 x 4
+##    hair_color    skin_color eye_color     n
+##    &lt;chr&gt;         &lt;chr&gt;      &lt;chr&gt;     &lt;int&gt;
+##  1 auburn        fair       blue          1
+##  2 auburn, grey  fair       blue          1
+##  3 auburn, white fair       blue-gray     1
+##  4 black         blue, grey yellow        1
+##  5 black         brown      brown         1
+##  6 black         dark       brown         3
+##  7 black         dark       dark          1
+##  8 black         fair       brown         2
+##  9 black         light      brown         1
+## 10 black         tan        brown         2
+## # ... with 57 more rows
+```
+
+---
+
+
+---
+
+class: center, inverse
+
+# Puzzle break 1
+
+---
+
+class: center, inverse
+
+# Puzzle break 2
+
+---
+
+class: center, inverse
+
+# Puzzle break 3
+
+
+---
+
+# Lessons Learned
+
+---
+
+## Don't use 2 words to mean 1 thing
+
+## Don't use 1 word to mean 2 things
+
+---
+
+# Write functions
+
+_even if you only use them once_
+
+## Keep code **modular** and **readable**
+
+---
+
+# Names matter
+
+-
+    </textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function() {
+  var d = document, s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})();</script>
+
+<script>
+(function() {
+  var i, text, code, codes = document.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+})();
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
