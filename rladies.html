@@ -127,8 +127,8 @@ class: inverse, center, middle
 
 ```r
 starwars %&gt;%
-    group_by(hair_color, skin_color, eye_color) %&gt;%
-    summarize(count = n())
+*   group_by(hair_color, skin_color, eye_color) %&gt;%
+*   summarize(count = n())
 ```
 
 ```
@@ -154,7 +154,7 @@ starwars %&gt;%
 
 ```r
 starwars %&gt;% 
-    count(hair_color, skin_color, eye_color)
+*   count(hair_color, skin_color, eye_color)
 ```
 
 ```
@@ -221,7 +221,7 @@ class: inverse, center, middle
 
 ```r
 sw %&gt;% 
-    separate_rows(starships_combined, sep = "; ")
+*   separate_rows(starships_combined, sep = "; ")
 ```
 
 ```
@@ -247,8 +247,8 @@ sw %&gt;%
 
 
 ```r
-sw2 &lt;- starwars %&gt;% select(name, starships)
-sw2
+starwars %&gt;% 
+    select(name, starships) 
 ```
 
 ```
@@ -272,8 +272,9 @@ sw2
 
 
 ```r
-sw2 %&gt;% 
-    unnest(starships)
+starwars %&gt;% 
+    select(name, starships) %&gt;% 
+*   unnest(starships)
 ```
 
 ```
@@ -297,9 +298,10 @@ sw2 %&gt;%
 
 
 ```r
-sw2 %&gt;% 
+starwars %&gt;% 
+    select(name, starships) %&gt;% 
     unnest(starships) %&gt;% 
-    nest(name)
+*   nest(name)
 ```
 
 ```
@@ -380,8 +382,8 @@ pies
 
 ```r
 pies %&gt;% 
-    mutate(name = str_trim(name),
-           flour = na_if(flour, "none"))
+*   mutate(name = str_trim(name),
+*          flour = na_if(flour, "none"))
 ```
 
 ```
@@ -469,6 +471,7 @@ _even if you only use them once_
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
 "highlightStyle": "github",
+"highlightLines": true,
 "countIncrementalSlides": false
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {

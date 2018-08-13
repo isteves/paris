@@ -9,6 +9,7 @@ output:
     css: [default, rladies, uo-fonts]
     nature:
       highlightStyle: github
+      highlightLines: true
       countIncrementalSlides: false
 ---
 
@@ -99,15 +100,15 @@ class: inverse, center, middle
 
 ```{r}
 starwars %>%
-    group_by(hair_color, skin_color, eye_color) %>%
-    summarize(count = n())
+    group_by(hair_color, skin_color, eye_color) %>% #<<
+    summarize(count = n()) #<<
 ```
 
 ---
 
 ```{r}
 starwars %>% 
-    count(hair_color, skin_color, eye_color)
+    count(hair_color, skin_color, eye_color) #<<
 ```
 
 ---
@@ -138,7 +139,7 @@ sw
 
 ```{r}
 sw %>% 
-    separate_rows(starships_combined, sep = "; ")
+    separate_rows(starships_combined, sep = "; ") #<<
 ```
 
 ---
@@ -146,23 +147,25 @@ sw %>%
 ## `nest()/unnest()`
 
 ```{r}
-sw2 <- starwars %>% select(name, starships)
-sw2
+starwars %>% 
+    select(name, starships) 
 ```
 
 ---
 
 ```{r}
-sw2 %>% 
-    unnest(starships)
+starwars %>% 
+    select(name, starships) %>% 
+    unnest(starships) #<<
 ```
 
 ---
 
 ```{r}
-sw2 %>% 
+starwars %>% 
+    select(name, starships) %>% 
     unnest(starships) %>% 
-    nest(name)
+    nest(name) #<<
 ```
 
 ---
@@ -209,8 +212,8 @@ pies
 
 ```{r}
 pies %>% 
-    mutate(name = str_trim(name),
-           flour = na_if(flour, "none"))
+    mutate(name = str_trim(name), #<<
+           flour = na_if(flour, "none")) #<<
 ```
 
 ---
