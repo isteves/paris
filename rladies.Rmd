@@ -1,12 +1,13 @@
 ---
-title: My presentation
+title: A Summer of Puzzles
 subtitle: RLadies Paris
 author: Irene Steves
 date: August 2018
 output:
   xaringan::moon_reader:
     lib_dir: libs
-    css: [default, rladies, uo-fonts]
+    self_contained: false
+    css: ["default", "rladies", "custom-fonts.css"]
     nature:
       highlightStyle: github
       highlightLines: true
@@ -15,15 +16,15 @@ output:
 
 # About me
 
-- Background in B.A./M.Sc. organismal biology/ecology
-- Most recently in Santa Barbara
+- Background: B.A./M.Sc. organismal biology/ecology
+- Most recently in Santa Barbara, California
 - Next up: Tel Aviv
 
-![](animals.png)
+![](img/animals.png)
 
 ---
 
-background-image: url(santabarbara.jpg)
+background-image: url(img/santabarbara.jpg)
 background-position: center
 background-size: cover
 
@@ -37,26 +38,176 @@ background-size: contain
 
 # Advent of Code
 
-a series of [programming puzzles](https://adventofcode.com/2017/about) in December every year (2015-present)
+A series of [programming puzzles](https://adventofcode.com/2017/about) in December every year (2015-present)
 
 - language agnostic
 - 2-part puzzles that build on a theme 
 - leaderboard/stats
 
-fun topics (recursion, hashing, etc.) but don't showcase R/tidyverse
+Fun topics (recursion, hashing, etc.) that are [do-able in R](https://isteves.github.io/advent_of_code_2017/index.html) but don't showcase the strengths of R/tidyverse
 
 ---
 
 # Tidies of March
 
-A series of bite-sized puzzles that focus on _core data science skills_ as championed by the tidyverse set of packages
+Bite-sized puzzles that focus on _core data science skills_ as championed by the tidyverse set of packages
 
 **User goals:**
 
 - Practice tidyverse skills
-- Improve workflow/project management 
 - Engage with the community
 - Learn by reading other people's code
+- Improve workflow/project management
+
+---
+
+# Lessons learned
+
+- names matter
+- paths are tricky
+- time spent organizing code is time well spent
+
+---
+
+class: inverse, center, middle
+# Naming things
+
+---
+
+#### Don't use 2 names for 1 thing
+
+_Spot_ ran outside. I chased _the dog_.
+
+#### Don't use 1 name for 2 things
+
+![](img/flight-wiki.jpg)
+
+---
+
+## [How to name files](https://speakerdeck.com/jennybc/how-to-name-files)
+
+Key principles from Jenny Bryan:
+
+1. Machine readable
+2. Human readable
+3. Plays well with default ordering
+
+---
+
+[A real world example](https://github.com/jennybc/purrr-tutorial):
+
+![](img/purrr-names-close.PNG)
+
+- _bk_ prefix to group topics in a chapter
+- leading 0 to avoid _10, 1, 2, 3..._
+- Underscore _ separates topic prefix from title
+- Dash - separates words in title
+
+---
+
+![](img/purrr-names-prefix.PNG)
+
+---
+
+## Good separators are context dependent
+
+- **Folder/files:** use underscores/dashes 
+    - `periods.have.special.meanings.EXT`
+- **Functions:** snake_case ([tidyverse style guide](http://style.tidyverse.org/functions.html#naming))
+    - `camelCaseIsHardToReadWhenThingsGetLong`
+    - `dot.notation.has.special.meaning.in.S3`
+- **Packages:** only letters, numbers, and periods
+- **GitHub repositories:** best to match package name; dashes/underscores for script repos
+
+---
+
+class: inverse, center, middle
+# Path tricks
+
+---
+
+#### Hard-coded paths won't work for anyone else:
+
+`C:/Users/Irene/R/cute_puppies.jpg`
+
+...but relative paths work differently in .R files versus in .Rmd's
+
+---
+
+#### `here::here()` makes relative paths easy
+
+- .R finds files relative to .Rproj
+- .Rmd finds files relative to wherever .Rmd lives
+
+Paths won't "just work" when used in .R/.Rmd
+
+```{r eval = FALSE}
+df <- readr::read_csv("data/my_data.csv")
+```
+
+whereas `here::here` will make it work in both
+
+```{r eval = FALSE}
+df <- readr::read_csv(here::here("data/my_data.csv"))
+```
+
+---
+
+#### Finding files within a package changes after installation
+
+- Use `system.file(package = "pkgname")` to determine the file path to the installed package
+- The `inst` directory in packages is "flattened" when installed
+
+---
+
+#### `fs` smooths out base R file path inconsistencies
+
+```{r}
+file.path("dir1\\dir2", "filename")
+fs::path("dir1\\dir2", "filename")
+```
+
+Other reasons to try it:
+
+- Consistent & predictable return values and names
+- UTF-8
+- Explicit failure
+
+---
+
+class: inverse, center, middle
+# Project structure
+
+---
+
+> It is a truth universally acknowledged, that a single project in possession of many files, must be in want of a structure.
+
+---
+
+background-image: url(img/purrr-names-prefix.PNG)
+background-position: center
+background-size: contain
+
+---
+
+background-image: url(img/purrr-web.PNG)
+background-position: center
+background-size: contain
+
+---
+
+background-image: url(img/purrr-rmd.PNG)
+background-position: center
+background-size: cover
+
+---
+
+x
+
+- checks file extensions
+- parses yamls for titles and comments
+- creates links
+- adds `*` for bullets
 
 ---
 
@@ -89,7 +240,7 @@ starwars
 
 ---
 
-background-image: url(grunions.jpg)
+background-image: url(img/grunions.jpg)
 background-position: center
 background-size: cover
 class: inverse, center, middle
@@ -113,7 +264,7 @@ starwars %>%
 
 ---
 
-background-image: url(nest.jpg)
+background-image: url(img/nest.jpg)
 background-position: center
 background-size: cover
 class: inverse, center, middle
@@ -177,7 +328,7 @@ starwars %>%
 
 ---
 
-background-image: url(shakshuka.jpg)
+background-image: url(img/shakshuka.jpg)
 background-position: center
 background-size: cover
 class: inverse, center, middle
@@ -246,17 +397,6 @@ class: center, inverse
 
 # Puzzle break 3
 
-
----
-
-# Lessons Learned
-
----
-
-## Don't use 2 words to mean 1 thing
-
-## Don't use 1 word to mean 2 things
-
 ---
 
 # Write functions
@@ -264,11 +404,5 @@ class: center, inverse
 _even if you only use them once_
 
 ## Keep code **modular** and **readable**
-
----
-
-# Names matter
-
-- 
 
 
