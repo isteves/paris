@@ -7,6 +7,7 @@ output:
   xaringan::moon_reader:
     lib_dir: libs
     self_contained: false
+    chakra: "libs/remark-latest.min.js"
     css: ["default", "rladies", "custom-fonts.css"]
     nature:
       highlightStyle: github
@@ -24,13 +25,7 @@ output:
 
 ---
 
-background-image: url(img/santabarbara.jpg)
-background-position: center
-background-size: cover
-
----
-
-background-image: url(https://media.giphy.com/media/wPn31WOCzkvKg/giphy.gif)
+background-image: url(img/arcticdatacenter.png)
 background-position: center
 background-size: contain
 
@@ -44,7 +39,7 @@ A series of [programming puzzles](https://adventofcode.com/2017/about) in Decemb
 - 2-part puzzles that build on a theme 
 - leaderboard/stats
 
-Fun topics (recursion, hashing, etc.) that are [do-able in R](https://isteves.github.io/advent_of_code_2017/index.html) but don't showcase the strengths of R/tidyverse
+Fun topics (recursion, hashing, etc.) that can be [solved in R](https://isteves.github.io/advent_of_code_2017/index.html) but don't showcase the strengths of R/tidyverse
 
 ---
 
@@ -61,11 +56,25 @@ Bite-sized puzzles that focus on _core data science skills_ as championed by the
 
 ---
 
-# Lessons learned
+# My summer at RStudio
 
-- names matter
-- paths are tricky
-- time spent organizing code is time well spent
+- Created 30 puzzles
+- Prototyped two user interfaces
+    - Web-browser experience - language agnostic
+    - R-mediated experience
+- Built infrastructure to access puzzle data and check solutions
+
+---
+
+# Internship take-aways
+
+.large[
+Names matter
+
+Paths are tricky
+
+Time spent organizing code is time well spent
+]
 
 ---
 
@@ -74,19 +83,46 @@ class: inverse, center, middle
 
 ---
 
-#### Don't use 2 names for 1 thing
+class: center, middle
 
-_Spot_ ran outside. I chased _the dog_.
+## Don't use 2 names for 1 thing
 
-#### Don't use 1 name for 2 things
-
-![](img/flight-wiki.jpg)
+## Don't use 1 name for 2 things
 
 ---
 
-## [How to name files](https://speakerdeck.com/jennybc/how-to-name-files)
+class: center
 
-Key principles from Jenny Bryan:
+_Spot_ ran outside. I chased _the dog_.
+
+
+```{r echo = FALSE, out.width = "120%"}
+knitr::include_graphics("img/giphy-confused-dog.gif")
+```
+
+---
+
+In writing some variation is okay.
+
+> The Tidies of March is a series of coding challenges. These puzzles focus on core data science skills.
+
+In code variation can be confusing:
+
+# puzzle.R, challenge.yml, etc.
+
+---
+
+```{r echo = FALSE, out.width = "120%"}
+knitr::include_graphics("img/flight-wiki.jpg")
+```
+
+# puzzle versus puzzle series
+
+---
+
+# Naming files
+
+Key principles from Jenny Bryan: [How to name files](https://speakerdeck.com/jennybc/how-to-name-files):
 
 1. Machine readable
 2. Human readable
@@ -109,15 +145,16 @@ Key principles from Jenny Bryan:
 
 ---
 
-## Good separators are context dependent
+# Good separators are context dependent
 
-- **Folder/files:** use underscores/dashes 
+- **Folder/files:** underscores/dashes 
     - `periods.have.special.meanings.EXT`
+    - spaces???
 - **Functions:** snake_case ([tidyverse style guide](http://style.tidyverse.org/functions.html#naming))
     - `camelCaseIsHardToReadWhenThingsGetLong`
     - `dot.notation.has.special.meaning.in.S3`
 - **Packages:** only letters, numbers, and periods
-- **GitHub repositories:** best to match package name; dashes/underscores for script repos
+- **GitHub repositories:** dashes allowed but best to match package name (dots allowed???)
 
 ---
 
@@ -139,6 +176,8 @@ class: inverse, center, middle
 - .R finds files relative to .Rproj
 - .Rmd finds files relative to wherever .Rmd lives
 
+---
+
 Paths won't "just work" when used in .R/.Rmd
 
 ```{r eval = FALSE}
@@ -153,10 +192,10 @@ df <- readr::read_csv(here::here("data/my_data.csv"))
 
 ---
 
-#### Finding files within a package changes after installation
+#### Package file paths change after installation
 
-- Use `system.file(package = "pkgname")` to determine the file path to the installed package
-- The `inst` directory in packages is "flattened" when installed
+- Use `system.file(package = "pkgname")` for paths in an installed package
+- The `inst` directory in packages gets "flattened" when installed
 
 ---
 
@@ -167,9 +206,11 @@ file.path("dir1\\dir2", "filename")
 fs::path("dir1\\dir2", "filename")
 ```
 
-Other reasons to try it:
+---
 
-- Consistent & predictable return values and names
+Other reasons to try `fs`:
+
+- Return values and names are consistent & predictable
 - UTF-8
 - Explicit failure
 
@@ -181,6 +222,33 @@ class: inverse, center, middle
 ---
 
 > It is a truth universally acknowledged, that a single project in possession of many files, must be in want of a structure.
+
+---
+
+- Functions give code structure
+- Packages give functions structure
+
+---
+
+#where's the price illustration
+#or: so predictable gif (predictability is a good thing!)
+
+---
+
+other people can understand
+you can harness the power of the machine!!
+
+---
+
+Legos are successful bc they are made of small pieces that can be used in different contexts; but specialized pieces are also important
+
+Standard interface makes it easy to find things (where's the price)
+predictable
+- packages to store functions
+- bookdown/blogdown
+- etc
+
+With a good structure, you can harness the power of the machine
 
 ---
 
@@ -211,22 +279,31 @@ x
 
 ---
 
-# Tidyverse functions
-
-What more is there than the core verbs?
-
-- `mutate()`
-- `select()`
-- `filter()`
-- `summarize()`
-- `arrange()`
-- `group_by()`
+last point: make yourself feel good with small achievements
+dog treats gif?
+lots of issues--feeling of achievement when closing them; documentation for process
 
 ---
 
-class: inverse, center, middle
+class: inverse
 
-# Under-loved tidyverse functions
+# Puzzle break 1: Sandwiches
+
+1. Sign in via GitHub/Google
+2. Make a COPY of the project
+3. Solve the puzzle!
+
+---
+
+class: inverse
+
+# Puzzle break 2: Concerts
+
+---
+
+background-image: url(img/santabarbara.jpg)
+background-position: center
+background-size: cover
 
 ---
 
@@ -270,6 +347,61 @@ background-size: cover
 class: inverse, center, middle
 
 # Embrace the list-column
+
+---
+
+background-image: url(img/shakshuka.jpg)
+background-position: center
+background-size: cover
+class: inverse, center, middle
+
+# Data ingest
+
+---
+
+## Handle data ingest issues upfront
+
+```{r eval = FALSE}
+read_csv("data.csv", 
+         skip = 2,
+         na = c("NA", "-9999"),
+         trim_ws = TRUE)
+```
+
+---
+
+```{r}
+pies <- tribble(
+    ~name, ~eggs, ~flour,
+    "lemon", NA, NA, 
+    " pumpkin", 2, 1,
+    "chocolate ", 1, "none"
+)
+
+pies
+```
+
+---
+
+```{r}
+pies %>% 
+    mutate(name = str_trim(name), #<<
+           flour = na_if(flour, "none")) #<<
+```
+
+---
+
+# `count()`
+
+```{r}
+starwars %>% 
+    count(hair_color, skin_color, eye_color)
+```
+
+---
+
+
+
 
 ---
 
@@ -325,84 +457,5 @@ starwars %>%
 
 - models - split your data by some group and apply the model onto your tibble list-column
 - strings - `str_extract_all` & friends often return results of varying length
-
----
-
-background-image: url(img/shakshuka.jpg)
-background-position: center
-background-size: cover
-class: inverse, center, middle
-
-# Data ingest
-
----
-
-## Handle data ingest issues upfront
-
-```{r eval = FALSE}
-read_csv("data.csv", 
-         skip = 2,
-         na = c("NA", "-9999"),
-         trim_ws = TRUE)
-```
-
----
-
-```{r}
-pies <- tribble(
-    ~name, ~eggs, ~flour,
-    "lemon", NA, NA, 
-    " pumpkin", 2, 1,
-    "chocolate ", 1, "none"
-)
-
-pies
-```
-
----
-
-```{r}
-pies %>% 
-    mutate(name = str_trim(name), #<<
-           flour = na_if(flour, "none")) #<<
-```
-
----
-
-# `count()`
-
-```{r}
-starwars %>% 
-    count(hair_color, skin_color, eye_color)
-```
-
----
-
-
----
-
-class: center, inverse
-
-# Puzzle break 1
-
----
-
-class: center, inverse
-
-# Puzzle break 2
-
----
-
-class: center, inverse
-
-# Puzzle break 3
-
----
-
-# Write functions
-
-_even if you only use them once_
-
-## Keep code **modular** and **readable**
 
 
