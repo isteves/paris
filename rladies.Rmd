@@ -25,31 +25,43 @@ output:
 
 ---
 
-background-image: url(img/arcticdatacenter.png)
+background-image: url(img/winter.gif)
 background-position: center
-background-size: contain
+background-size: cover
 
 ---
 
 # Advent of Code
 
-A series of [programming puzzles](https://adventofcode.com/2017/about) in December every year (2015-present)
+A series of [programming puzzles](https://adventofcode.com/2017/about) in December (2015-present)
 
 - language agnostic
 - 2-part puzzles that build on a theme 
-- leaderboard/stats
+- leaderboard/stats    
 
-Fun topics (recursion, hashing, etc.) that can be [solved in R](https://isteves.github.io/advent_of_code_2017/index.html) but don't showcase the strengths of R/tidyverse
+--
+
+Fun topics (recursion, hashing, etc.) that are [possible to solve in R](https://isteves.github.io/advent_of_code_2017/index.html) but don't showcase the strengths of R/tidyverse
 
 ---
 
+background-image: url(img/jenny.png)
+background-position: center
+background-size: contain
+
 # Tidies of March
 
-Bite-sized puzzles that focus on _core data science skills_ as championed by the tidyverse set of packages
+--
 
-**User goals:**
+Bite-sized puzzles that focus on _core data science skills_ as championed by the tidyverse set of packages     
 
-- Practice tidyverse skills
+<img src="img/tidy-hex.png" width="75%">
+
+---
+
+## User goals
+
+- Practice data wrangling/tidyverse skills
 - Engage with the community
 - Learn by reading other people's code
 - Improve workflow/project management
@@ -58,75 +70,85 @@ Bite-sized puzzles that focus on _core data science skills_ as championed by the
 
 # My summer at RStudio
 
-- Created 30 puzzles
-- Prototyped two user interfaces
-    - Web-browser experience - language agnostic
-    - R-mediated experience
-- Built infrastructure to access puzzle data and check solutions
+--
+
+Created 30 puzzles with unique puzzle inputs and answer-checking
+
+--
+
+Prototyped two user interfaces:
+- web-browser experience (language agnostic)
+- R-mediated experience
+
+---
+
+class: inverse, center, middle
+# Demo
 
 ---
 
 # Internship take-aways
 
-.large[
-Names matter
+--
 
-Paths are tricky
+.xlarge[Names matter]
 
-Time spent organizing code is time well spent
-]
+--
+
+.xlarge[Links are tricky]
+
+--
+
+.xlarge[Time spent organizing is time well spent]
 
 ---
 
 class: inverse, center, middle
-# Naming things
+# Names
 
 ---
 
 class: center, middle
-
 ## Don't use 2 names for 1 thing
-
-## Don't use 1 name for 2 things
 
 ---
 
 class: center
 
-_Spot_ ran outside. I chased _the dog_.
-
+.large[
+.pull-left[puzzle]
+.pull-right[challenge]
+]
+<br>
 
 ```{r echo = FALSE, out.width = "120%"}
+library(tidyverse)
 knitr::include_graphics("img/giphy-confused-dog.gif")
 ```
 
 ---
 
-In writing some variation is okay.
+.center[`tidies-of-march`]
 
-> The Tidies of March is a series of coding challenges. These puzzles focus on core data science skills.
+valid RProj/GitHub repo name, _invalid_ R package name
 
-In code variation can be confusing:
+.pull-left[
+![](img/name-rproj.PNG)
+]
 
-# puzzle.R, challenge.yml, etc.
-
----
-
-```{r echo = FALSE, out.width = "120%"}
-knitr::include_graphics("img/flight-wiki.jpg")
-```
-
-# puzzle versus puzzle series
+.pull-right[
+![](img/name-pkg.PNG)
+]
 
 ---
 
-# Naming files
+From Jenny Bryan, _[How to name files](https://speakerdeck.com/jennybc/how-to-name-files)_:
 
-Key principles from Jenny Bryan: [How to name files](https://speakerdeck.com/jennybc/how-to-name-files):
-
+.xlarge[
 1. Machine readable
 2. Human readable
 3. Plays well with default ordering
+]
 
 ---
 
@@ -141,74 +163,70 @@ Key principles from Jenny Bryan: [How to name files](https://speakerdeck.com/jen
 
 ---
 
-![](img/purrr-names-prefix.PNG)
-
----
-
-# Good separators are context dependent
-
-- **Folder/files:** underscores/dashes 
-    - `periods.have.special.meanings.EXT`
-    - spaces???
-- **Functions:** snake_case ([tidyverse style guide](http://style.tidyverse.org/functions.html#naming))
-    - `camelCaseIsHardToReadWhenThingsGetLong`
-    - `dot.notation.has.special.meaning.in.S3`
-- **Packages:** only letters, numbers, and periods
-- **GitHub repositories:** dashes allowed but best to match package name (dots allowed???)
-
----
-
 class: inverse, center, middle
-# Path tricks
+# Linking things
 
 ---
 
-#### Hard-coded paths won't work for anyone else:
+## Use relative paths
 
-`C:/Users/Irene/R/cute_puppies.jpg`
+Hard-coded paths won't work for other people
+
+.center[`C:/Users/Irene/cute_puppy.jpg`]
+
+.pull-left[![](img/cute-puppy.jpg)]
+.pull-right[![](img/cute-puppy-error.png)]
+
+---
 
 ...but relative paths work differently in .R files versus in .Rmd's
 
----
-
-#### `here::here()` makes relative paths easy
-
-- .R finds files relative to .Rproj
-- .Rmd finds files relative to wherever .Rmd lives
+![](img/wd.png)
 
 ---
 
-Paths won't "just work" when used in .R/.Rmd
+class: center, middle
+
+.xlarge[`here::here`] 
+eliminates the gotcha
 
 ```{r eval = FALSE}
-df <- readr::read_csv("data/my_data.csv")
-```
-
-whereas `here::here` will make it work in both
-
-```{r eval = FALSE}
-df <- readr::read_csv(here::here("data/my_data.csv"))
+read_csv(here::here("data/my_data.csv"))
 ```
 
 ---
 
-#### Package file paths change after installation
+## Paths after package installation
+
+- `here::here` no longer looks in the same place
+
+--
+
+- `inst` directory gets "flattened" when installed
+
+--
 
 - Use `system.file(package = "pkgname")` for paths in an installed package
-- The `inst` directory in packages gets "flattened" when installed
 
 ---
 
-#### `fs` smooths out base R file path inconsistencies
+## `fs`
+
+smooths out base R file path inconsistencies
 
 ```{r}
 file.path("dir1\\dir2", "filename")
+```
+
+--
+
+```{r}
 fs::path("dir1\\dir2", "filename")
 ```
 
 ---
 
-Other reasons to try `fs`:
+## `fs`
 
 - Return values and names are consistent & predictable
 - UTF-8
@@ -217,44 +235,33 @@ Other reasons to try `fs`:
 ---
 
 class: inverse, center, middle
-# Project structure
+# Project organization
 
 ---
 
-> It is a truth universally acknowledged, that a single project in possession of many files, must be in want of a structure.
+class: middle
+
+.xlarge[
+_Be predictable:_ follow conventions unless you have a good reason not to
+]
 
 ---
 
-- Functions give code structure
-- Packages give functions structure
+## Packages give functions structure
+
+<img src="img/pkg-structure.PNG" width="100%">
+
+--
+
+Fitting into a familiar structure awkwardly is often better than inventing something brand new
 
 ---
 
-#where's the price illustration
-#or: so predictable gif (predictability is a good thing!)
+class: middle
 
----
-
-other people can understand
-you can harness the power of the machine!!
-
----
-
-Legos are successful bc they are made of small pieces that can be used in different contexts; but specialized pieces are also important
-
-Standard interface makes it easy to find things (where's the price)
-predictable
-- packages to store functions
-- bookdown/blogdown
-- etc
-
-With a good structure, you can harness the power of the machine
-
----
-
-background-image: url(img/purrr-names-prefix.PNG)
-background-position: center
-background-size: contain
+.xlarge[
+Systematic names & directory structure --> easy to work with files programmatically
+]
 
 ---
 
@@ -264,198 +271,47 @@ background-size: contain
 
 ---
 
+background-image: url(img/purrr-names-prefix.PNG)
+background-position: center
+background-size: contain
+
+---
+
+## [index.Rmd](https://github.com/jennybc/purrr-tutorial/blob/gh-pages/index.Rmd)
+
+Pre-process all files once
+
+- filter for files with both .Rmd and .html
+- extract titles and comments from ymls
+- add formatting (`*` for bullets, italics for comments, links to html)
+
+--
+
+For each _section_, filter for the relevant files
+
+---
+
 background-image: url(img/purrr-rmd.PNG)
 background-position: center
 background-size: cover
 
 ---
 
-x
-
-- checks file extensions
-- parses yamls for titles and comments
-- creates links
-- adds `*` for bullets
-
----
-
-last point: make yourself feel good with small achievements
-dog treats gif?
-lots of issues--feeling of achievement when closing them; documentation for process
-
----
-
 class: inverse
 
-# Puzzle break 1: Sandwiches
+# Puzzle break
 
-1. Sign in via GitHub/Google
-2. Make a COPY of the project
-3. Solve the puzzle!
+.center[https://bit.ly/2woid16]
 
----
-
-class: inverse
-
-# Puzzle break 2: Concerts
+### 1. Sign in via GitHub/Google
+### 2. Make a COPY of the project
+### 3. Solve the puzzle!
 
 ---
 
 background-image: url(img/santabarbara.jpg)
 background-position: center
 background-size: cover
+class: inverse, center
 
----
-
-## Data
-
-```{r}
-library(tidyverse)
-
-starwars
-```
-
----
-
-background-image: url(img/grunions.jpg)
-background-position: center
-background-size: cover
-class: inverse, center, middle
-
-# `count`ing things
-
----
-
-```{r}
-starwars %>%
-    group_by(hair_color, skin_color, eye_color) %>% #<<
-    summarize(count = n()) #<<
-```
-
----
-
-```{r}
-starwars %>% 
-    count(hair_color, skin_color, eye_color) #<<
-```
-
----
-
-background-image: url(img/nest.jpg)
-background-position: center
-background-size: cover
-class: inverse, center, middle
-
-# Embrace the list-column
-
----
-
-background-image: url(img/shakshuka.jpg)
-background-position: center
-background-size: cover
-class: inverse, center, middle
-
-# Data ingest
-
----
-
-## Handle data ingest issues upfront
-
-```{r eval = FALSE}
-read_csv("data.csv", 
-         skip = 2,
-         na = c("NA", "-9999"),
-         trim_ws = TRUE)
-```
-
----
-
-```{r}
-pies <- tribble(
-    ~name, ~eggs, ~flour,
-    "lemon", NA, NA, 
-    " pumpkin", 2, 1,
-    "chocolate ", 1, "none"
-)
-
-pies
-```
-
----
-
-```{r}
-pies %>% 
-    mutate(name = str_trim(name), #<<
-           flour = na_if(flour, "none")) #<<
-```
-
----
-
-# `count()`
-
-```{r}
-starwars %>% 
-    count(hair_color, skin_color, eye_color)
-```
-
----
-
-
-
-
----
-
-## List-columns in familiar form
-
-```{r echo = FALSE}
-sw <- starwars %>% 
-    select(name, starships) %>% 
-    unnest(starships) %>% 
-    group_by(name) %>%
-    summarize(starships_combined = paste(starships, collapse = "; "))
-sw
-```
-
----
-
-## `separate` out the `rows`
-
-```{r}
-sw %>% 
-    separate_rows(starships_combined, sep = "; ") #<<
-```
-
----
-
-## `nest()/unnest()`
-
-```{r}
-starwars %>% 
-    select(name, starships) 
-```
-
----
-
-```{r}
-starwars %>% 
-    select(name, starships) %>% 
-    unnest(starships) #<<
-```
-
----
-
-```{r}
-starwars %>% 
-    select(name, starships) %>% 
-    unnest(starships) %>% 
-    nest(name) #<<
-```
-
----
-
-## Typical use-cases
-
-- models - split your data by some group and apply the model onto your tibble list-column
-- strings - `str_extract_all` & friends often return results of varying length
-
-
+# Thank you!
