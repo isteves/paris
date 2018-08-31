@@ -1,8 +1,7 @@
 ---
-title: A Summer of Puzzles
-subtitle: RLadies Paris
-author: Irene Steves
-date: August 2018
+title: A Summer of Puzzle-Making
+subtitle: RLadies Paris, Aug 2018 
+author: Irene Steves <br> <i class="fab fa-twitter"></i> i_steves `r icon::fa("github")` isteves
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -19,7 +18,7 @@ output:
 
 - Background: B.A./M.Sc. organismal biology/ecology
 - Most recently in Santa Barbara, California
-- Next up: Tel Aviv
+- Next up: Tel Aviv  
 
 ![](img/animals.png)
 
@@ -188,7 +187,7 @@ Hard-coded paths won't work for other people
 class: center, middle
 
 .xlarge[`here::here`] 
-eliminates the gotcha
+eliminates the issue
 
 ```{r eval = FALSE}
 read_csv(here::here("data/my_data.csv"))
@@ -206,7 +205,7 @@ read_csv(here::here("data/my_data.csv"))
 
 --
 
-- Use `system.file(package = "pkgname")` for paths in an installed package
+- Use `system.file("myfile.EXT", package = "pkgname")` for paths in an installed package
 
 ---
 
@@ -229,6 +228,7 @@ fs::path("dir1\\dir2", "filename")
 ## `fs`
 
 - Return values and names are consistent & predictable
+- Vectorized
 - UTF-8
 - Explicit failure
 
@@ -242,7 +242,9 @@ class: inverse, center, middle
 class: middle
 
 .xlarge[
-_Be predictable:_ follow conventions unless you have a good reason not to
+_Be predictable:_   
+
+follow conventions unless you have a good reason not to
 ]
 
 ---
@@ -297,21 +299,39 @@ background-size: cover
 
 ---
 
-class: inverse
+class: inverse, center, middle
 
-# Puzzle break
-
-.center[https://bit.ly/2woid16]
-
-### 1. Sign in via GitHub/Google
-### 2. Make a COPY of the project
-### 3. Solve the puzzle!
+# Puzzle 1
 
 ---
 
-background-image: url(img/santabarbara.jpg)
+# Function highlights
+
+- `readr::read_csv`
+- `tidyr::separate_rows`
+
+---
+
+class: inverse, center, middle
+
+# Puzzle 2
+
+---
+
+# Function highlights
+
+- `lubridate::ymd`
+- `purrr::map2`
+- `tidyr::unnest`
+- `dplyr::top_n`
+
+---
+
+background-image: url(img/santabarbara2.png)
 background-position: center
 background-size: cover
-class: inverse, center
+class: center, middle
 
 # Thank you!
+
+<i class="fab fa-twitter"></i> [i_steves](https://twitter.com/i_steves) `r icon::fa("github")` [isteves](https://github.com/isteves)
