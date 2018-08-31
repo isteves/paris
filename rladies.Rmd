@@ -310,6 +310,8 @@ class: inverse, center, middle
 - `readr::read_csv`
 - `tidyr::separate_rows`
 
+_[script](https://github.com/isteves/paris/blob/master/scripts/ex_encoding-seprows.R)_
+
 ---
 
 class: inverse, center, middle
@@ -324,6 +326,8 @@ class: inverse, center, middle
 - `purrr::map2`
 - `tidyr::unnest`
 - `dplyr::top_n`
+
+_[script](https://github.com/isteves/paris/blob/master/scripts/ex_periods.R)_
 
 ---
 
